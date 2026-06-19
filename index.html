@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprite Trade Stop — Fortnite Sprites Tracker</title>
+  <meta name="description" content="Track your Fortnite Sprites collection — Normal, Gold, Gummy and Galaxy. Mark what you have and what you're missing, then export a shareable image for trading." />
+  <link rel="icon" href="sprites/zeropoint_galaxy.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="title-wrap">
+      <img src="siteimages/mascot.png" alt="" class="title-mascot" />
+      <div>
+        <h1>FORTNITE SPRITES TRACKER</h1>
+        <p class="subtitle">Sprite Trade Stop — tap a sprite to mark it. Filter by line, export, and share.</p>
+      </div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-row">
+        <span class="progress-label">COLLECTION</span>
+        <span class="progress-count" id="collectionCount">0 / 0</span>
+        <div class="bar"><div class="bar-fill collection" id="collectionBar"></div></div>
+      </div>
+      <div class="progress-row">
+        <span class="progress-label">MASTERY</span>
+        <span class="progress-count" id="masteryCount">0 / 0</span>
+        <div class="bar"><div class="bar-fill mastery" id="masteryBar"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="controls">
+    <div class="filter-group" id="themeFilters" aria-label="Filter by variant line">
+      <!-- variant-line chips injected by app.js -->
+    </div>
+    <div class="filter-group" id="statusFilters" aria-label="Filter by status">
+      <button class="chip status-chip active" data-status="all">All</button>
+      <button class="chip status-chip" data-status="have">✅ Have</button>
+      <button class="chip status-chip" data-status="missing">❌ Missing</button>
+      <button class="chip status-chip" data-status="mastered">👑 Mastered</button>
+    </div>
+    <div class="filter-group toggles">
+      <label class="toggle"><input type="checkbox" id="groupByCharacter" /> Group by character</label>
+      <label class="toggle"><input type="checkbox" id="showUnreleased" /> Show unreleased</label>
+    </div>
+  </section>
+
+  <section class="bulk-bar">
+    <span class="hint" id="bulkHint">Tap a card: Missing → Have → Mastered. Long list? Use the line filter above.</span>
+    <div class="bulk-actions">
+      <button class="btn ghost" id="markHaveBtn">Mark shown: Have</button>
+      <button class="btn ghost" id="markMissingBtn">Mark shown: Missing</button>
+      <button class="btn ghost danger" id="resetBtn">Reset all</button>
+    </div>
+  </section>
+
+  <main id="grid" class="grid"><!-- cards injected here --></main>
+
+  <section class="export-bar">
+    <button class="btn primary" id="exportCollectionBtn">🖼️ Export “My Collection”</button>
+    <button class="btn primary red" id="exportMissingBtn">🔎 Export “Looking For”</button>
+    <button class="btn" id="shareBtn">🔗 Copy share link</button>
+  </section>
+
+  <footer class="site-footer">
+    <p>Unofficial fan tracker for <strong>Sprite Trade Stop</strong>. Sprite artwork © Epic Games.
+       Your collection is saved in this browser and in the share link — nothing is uploaded.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="export.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
