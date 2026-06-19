@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sprite Trade Stop Bot — Owner Walkthrough</title>
+<meta name="description" content="What the Sprite Trade Stop Discord bot does and how to add it to your server, step by step." />
+<link rel="icon" href="../sprites/zeropoint_galaxy.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0b0e13; --panel:#141923; --panel2:#1b2230; --line:#2a3344;
+  --text:#e8edf5; --muted:#94a1b6; --green:#2bd07a; --gold:#ffcf3a;
+  --purple:#7c5cff; --red:#ff4d5e; --blue:#2ea4ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1100px 560px at 50% -8%,#18203040 0,var(--bg) 60%) fixed,var(--bg);
+  color:var(--text);font-family:"Inter",system-ui,sans-serif;line-height:1.55;padding-bottom:60px}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+a{color:var(--green)}
+.hero{text-align:center;padding:54px 18px 26px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(124,92,255,.10),transparent)}
+.kicker{font-family:"Oswald";font-weight:700;letter-spacing:3px;color:var(--green);font-size:13px}
+h1{font-family:"Oswald";font-weight:900;font-style:italic;font-size:clamp(30px,6vw,52px);margin:6px 0 4px;
+  text-shadow:0 0 24px rgba(43,208,122,.35)}
+.sub{color:var(--muted);font-size:17px;max-width:680px;margin:8px auto 0}
+.hero-sprites{display:flex;gap:6px;justify-content:center;margin:22px 0 4px;flex-wrap:wrap}
+.hero-sprites img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 6px 10px #0008)}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.badge{font-size:12.5px;font-weight:700;border:1px solid var(--line);background:var(--panel);
+  border-radius:999px;padding:6px 13px;color:var(--muted)}
+.badge b{color:var(--green)}
+section{padding:40px 0 6px}
+.eyebrow{font-family:"Oswald";letter-spacing:2px;color:var(--purple);font-weight:700;font-size:13px}
+h2{font-family:"Oswald";font-weight:900;font-size:clamp(22px,4vw,32px);margin:4px 0 14px}
+.lead{color:var(--muted);font-size:16px;max-width:760px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h3{margin:2px 0 8px;font-size:17px;display:flex;align-items:center;gap:9px}
+.card .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:16px;flex:none}
+.card p{color:var(--muted);font-size:14px;margin:0 0 10px}
+.card code{background:#0e131c;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:12.5px;color:#cfe6ff}
+.cmds{display:flex;flex-wrap:wrap;gap:6px}
+.cmds code{font-size:12px}
+.g-green .ico{background:rgba(43,208,122,.18);color:var(--green)}
+.g-purple .ico{background:rgba(124,92,255,.2);color:#b9a6ff}
+.g-gold .ico{background:rgba(255,207,58,.16);color:var(--gold)}
+.g-blue .ico{background:rgba(46,164,255,.16);color:var(--blue)}
+.g-red .ico{background:rgba(255,77,94,.16);color:var(--red)}
+/* steps */
+.step{display:flex;gap:16px;padding:18px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:0}
+.num{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:"Oswald";
+  font-weight:900;font-size:18px;background:linear-gradient(180deg,#2fae67,#1f8f51);color:#fff;box-shadow:0 0 16px rgba(43,208,122,.3)}
+.step h3{margin:4px 0 6px;font-size:18px}
+.step p{margin:0 0 8px;color:var(--muted);font-size:14.5px}
+.step ul{margin:6px 0;padding-left:18px;color:var(--muted);font-size:14px}
+.step code{background:#0e131c;border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-size:13px;color:#cfe6ff}
+.callout{border-radius:14px;padding:14px 16px;margin:14px 0;font-size:14.5px;border:1px solid}
+.callout.warn{background:rgba(255,207,58,.07);border-color:#7a651f;color:#f4e6b8}
+.callout.info{background:rgba(46,164,255,.07);border-color:#2a4a6b;color:#cfe6ff}
+.callout.tip{background:rgba(43,208,122,.07);border-color:#235a3c;color:#bff0d4}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.two{grid-template-columns:1fr}}
+.host{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.host h4{margin:0 0 4px;font-size:15px}
+.host .price{font-family:"Oswald";font-weight:700;font-size:14px;color:var(--gold)}
+.host p{color:var(--muted);font-size:13.5px;margin:6px 0 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px}
+@media(max-width:680px){.split{grid-template-columns:1fr}}
+.split>div{padding:16px}
+.split .you{background:rgba(124,92,255,.08)}
+.split h4{margin:0 0 10px;font-family:"Oswald";letter-spacing:1px}
+.split li{color:var(--muted);font-size:14px;margin:5px 0}
+.cta{text-align:center;margin-top:26px}
+.btn{display:inline-block;margin:6px;padding:13px 22px;border-radius:12px;font-weight:800;text-decoration:none;
+  border:1px solid var(--line);color:var(--text);background:var(--panel2)}
+.btn.primary{background:linear-gradient(180deg,#2fae67,#1f8f51);border-color:var(--green);color:#fff}
+.btn.purple{background:linear-gradient(180deg,#7c5cff,#5a3fd6);border-color:var(--purple);color:#fff}
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;line-height:1.7}
+hr.div{border:0;border-top:1px solid var(--line);margin:34px 0 0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">FOR THE SERVER OWNER</div>
+  <h1>Sprite Trade Stop Bot</h1>
+  <p class="sub">A custom Discord bot that runs your sprite-trading economy — trust &amp; vouches, safe two-party trades, full collection tracking, and trade matchmaking. Free to run. Built for your server.</p>
+  <div class="hero-sprites">
+    <img src="../sprites/zeropoint_galaxy.png" alt=""><img src="../sprites/king_basic.png" alt="">
+    <img src="../sprites/water_basic.png" alt=""><img src="../sprites/punk_basic.png" alt="">
+    <img src="../sprites/duck_gold.png" alt=""><img src="../sprites/demon_galaxy.png" alt="">
+    <img src="../sprites/theburntpeanut_basic.png" alt="">
+  </div>
+  <div class="badges">
+    <span class="badge"><b>Free</b> to run</span>
+    <span class="badge"><b>No</b> paid AI</span>
+    <span class="badge"><b>Anti-scam</b> built in</span>
+    <span class="badge"><b>30 min</b> setup</span>
+    <span class="badge"><b>Open</b> source</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- WHAT IT DOES -->
+<section>
+  <div class="eyebrow">PART 1</div>
+  <h2>What it does</h2>
+  <p class="lead">Five things, all inside Discord. Members keep using the server normally — the bot handles trust, trades, and collections in the background.</p>
+
+  <div class="cards">
+    <div class="card g-green">
+      <h3><span class="ico">🤝</span> Trust &amp; reputation</h3>
+      <p>After a good trade, members vouch for each other. Vouches build trust and automatically promote traders up flair ranks. Earns the <b>verified-trader</b> role automatically.</p>
+      <div class="cmds"><code>/vouch</code><code>+rep</code><code>/profile</code><code>/rank</code><code>/leaderboard</code></div>
+    </div>
+
+    <div class="card g-purple">
+      <h3><span class="ico">🔁</span> Safe two-party trades</h3>
+      <p>A trade only counts when <b>both</b> people press Confirm — so nobody gets scammed on the drop. Then it prompts both to vouch. Everything is logged.</p>
+      <div class="cmds"><code>/trade</code></div>
+    </div>
+
+    <div class="card g-gold">
+      <h3><span class="ico">📒</span> Collection tracking</h3>
+      <p>Members track all 41 sprites on a companion web page, then sync it into Discord with one code. The bot makes shareable <b>collection</b> and <b>"looking for"</b> images automatically.</p>
+      <div class="cmds"><code>/synccollection</code><code>/mycollection</code><code>/missing</code><code>/spriteset</code></div>
+    </div>
+
+    <div class="card g-blue">
+      <h3><span class="ico">🔎</span> Trade matchmaking</h3>
+      <p>The bot knows who has what, so it can instantly find trade partners and show server-wide progress and the most-wanted sprites.</p>
+      <div class="cmds"><code>/holders</code><code>/spritematch</code><code>/spriteinfo</code><code>/guildprogress</code></div>
+    </div>
+
+    <div class="card g-red">
+      <h3><span class="ico">🛡️</span> Safety &amp; moderation</h3>
+      <p>Report scammers to a private mod channel, blacklist bad actors (it strips their trust roles), and stop alt-account farming with account-age, server-tenure, and cooldown checks.</p>
+      <div class="cmds"><code>/reportscammer</code><code>/blacklist</code></div>
+    </div>
+
+    <div class="card g-green">
+      <h3><span class="ico">🎉</span> Automatic housekeeping</h3>
+      <p>Welcomes new members, keeps the sprite-holder lists current, posts a daily leaderboard, an optional weekly digest, and announces brand-new sprites when Epic adds them.</p>
+      <div class="cmds"><code>/digest</code><code>/whohas</code><code>/whoneeds</code><code>welcome</code></div>
+    </div>
+  </div>
+
+  <div class="callout tip"><b>The big idea:</b> the bot turns a normal trading server into a tracked, trusted, scam-resistant community — members see their collection, find partners fast, and build a reputation that's hard to fake.</div>
+</section>
+
+<hr class="div" />
+
+<!-- HOW TO ADD IT -->
+<section>
+  <div class="eyebrow">PART 2</div>
+  <h2>How to add it — step by step</h2>
+  <p class="lead">About 30 minutes, no coding. You'll create the bot, invite it, host it, and run one setup command. Anyone you trust with a computer can follow this.</p>
+
+  <div class="step">
+    <div class="num">1</div>
+    <div>
+      <h3>Create the bot application</h3>
+      <p>Go to the <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord Developer Portal</a> → <b>New Application</b> → name it "Sprite Trade Stop". Then open <b>Bot</b> in the left menu → <b>Add Bot</b>.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div>
+      <h3>Turn on two switches (intents)</h3>
+      <p>Still on the <b>Bot</b> page, scroll to <b>Privileged Gateway Intents</b> and turn ON:</p>
+      <ul>
+        <li><b>Server Members Intent</b> — lets it welcome people and manage roles</li>
+        <li><b>Message Content Intent</b> — lets the <code>+rep</code> shortcut and analytics work</li>
+      </ul>
+      <p>Click <b>Save Changes</b>.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div>
+      <h3>Copy the secret token</h3>
+      <p>On the <b>Bot</b> page click <b>Reset Token</b> → <b>Copy</b>. This is the bot's password — keep it private, you'll paste it once during hosting (Step 5).</p>
+      <div class="callout warn">⚠️ Never share the token publicly. If it ever leaks, click <b>Reset Token</b> to make a new one.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <div>
+      <h3>Invite it to the server</h3>
+      <p>Open <b>OAuth2 → URL Generator</b>. Tick <b>bot</b> and <b>applications.commands</b>. Then under permissions tick: <b>Manage Roles, Send Messages, Embed Links, Attach Files, Read Message History, Add Reactions</b>. Copy the link at the bottom, open it, and add the bot to <b>Sprite Trade Stop</b>.</p>
+      <div class="callout warn"><b>Important — role position:</b> in <b>Server Settings → Roles</b>, drag the bot's role <b>above</b> all the sprite, Gold, flair, and verified-trader roles. Discord only lets a bot manage roles that sit below its own.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">5</div>
+    <div>
+      <h3>Host it (so it's online 24/7)</h3>
+      <p>The bot is a small program that needs to stay running. Pick one — the full click-by-click guide is in <a href="https://github.com/UltronCore/sprite-trade-stop/blob/main/HOSTING.md" target="_blank" rel="noopener">HOSTING.md</a>:</p>
+      <div class="cards" style="margin-top:10px">
+        <div class="host"><h4>Oracle Cloud — Free</h4><span class="price">$0 forever</span><p>Best free option. A real always-on server. Most setup, fully free.</p></div>
+        <div class="host"><h4>Bot-Hosting.net — Free</h4><span class="price">$0 (claim daily)</span><p>Easiest. Upload the folder, paste the token in a web panel. No Linux.</p></div>
+        <div class="host"><h4>Hetzner / DigitalOcean</h4><span class="price">~$4–5 / month</span><p>Most reliable, set-and-forget. A small paid server.</p></div>
+      </div>
+      <p style="margin-top:10px">During hosting you'll paste the token from Step 3 into a file called <code>.env</code> (or a token box in the panel).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">6</div>
+    <div>
+      <h3>Run one setup command</h3>
+      <p>In Discord, type <code>/setup</code>. The bot automatically finds your channels (trade-portal, vouch-trades, modlog, leaderboard, welcome, news, …) and your sprite/Gold/flair/verified roles by name, and saves them. It tells you if anything's missing so you can create it and run <code>/setup</code> again.</p>
+      <div class="callout info">No hunting for IDs by hand — <code>/setup</code> does the wiring. Optionally turn on the weekly recap with <code>/digest on</code>.</div>
+    </div>
+  </div>
+
+  <div class="callout tip" style="margin-top:18px">✅ <b>That's it.</b> The bot is live. Members can <code>/synccollection</code>, <code>/trade</code>, and <code>/vouch</code> right away.</div>
+</section>
+
+<hr class="div" />
+
+<!-- WEB TRACKER -->
+<section>
+  <div class="eyebrow">PART 3</div>
+  <h2>The companion: a collection tracker website</h2>
+  <p class="lead">Members mark which sprites they have on a fast, no-login web page, filter by Normal / Gold / Gummy / Galaxy, and export a shareable image. One button copies a <b>sync code</b> they paste into <code>/synccollection</code> — and the bot takes over from there.</p>
+  <div class="two" style="margin-top:14px">
+    <div class="host"><h4>🟢 Already live &amp; free</h4><p>Hosted on GitHub Pages. Nothing to install for members — they just open the link.</p></div>
+    <div class="host"><h4>🔗 Auto-stays-in-sync</h4><p>The website and the bot share the exact same sprite list, so a synced code always matches perfectly.</p></div>
+  </div>
+  <div class="cta">
+    <a class="btn purple" href="https://ultroncore.github.io/sprite-tracker/" target="_blank" rel="noopener">Open the Sprites Tracker</a>
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- WHO DOES WHAT -->
+<section>
+  <div class="eyebrow">PART 4</div>
+  <h2>Who does what</h2>
+  <div class="split">
+    <div class="you">
+      <h4>👑 You (owner), once</h4>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li>• Steps 1–6 above (≈30 min)</li>
+        <li>• Keep the bot's role above sprite roles</li>
+        <li>• Decide if you want the weekly digest</li>
+      </ul>
+    </div>
+    <div>
+      <h4>🤖 The bot, forever (automatic)</h4>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li>• Welcomes new members</li>
+        <li>• Runs trades, vouches &amp; flair ranks</li>
+        <li>• Renders collection images &amp; finds matches</li>
+        <li>• Updates lists, posts the leaderboard</li>
+        <li>• Announces new sprites &amp; blocks scammers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div" />
+
+<!-- TRUST -->
+<section>
+  <div class="eyebrow">PART 5</div>
+  <h2>Why it's safe to run</h2>
+  <div class="cards">
+    <div class="card g-green"><h3><span class="ico">💸</span> No cost, no AI bills</h3><p>Python + a small local file. No paid APIs, no subscriptions. Free hosting works fine.</p></div>
+    <div class="card g-blue"><h3><span class="ico">🔒</span> Your server only</h3><p>Locked to your one server. The bot can't be pulled into someone else's server to leak your data.</p></div>
+    <div class="card g-red"><h3><span class="ico">🚫</span> Anti-scam &amp; anti-spam</h3><p>Two-party confirms, account-age + tenure checks, cooldowns, vouch caps, and a blacklist that removes trust roles.</p></div>
+    <div class="card g-gold"><h3><span class="ico">📖</span> Open &amp; documented</h3><p>Full source on GitHub, automated tests, and a complete handoff guide so any helper can maintain it.</p></div>
+  </div>
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/UltronCore/sprite-trade-stop" target="_blank" rel="noopener">View the bot &amp; setup docs</a>
+    <a class="btn" href="https://github.com/UltronCore/sprite-trade-stop/blob/main/HOSTING.md" target="_blank" rel="noopener">Hosting guide</a>
+  </div>
+</section>
+
+<p class="foot">
+  Sprite Trade Stop Bot · made for the community · sprite art © Epic Games (fan project)<br>
+  Questions? Everything — setup, commands, and how it works — is in the GitHub README and ARCHITECTURE guide.
+</p>
+
+</div>
+</body>
+</html>
