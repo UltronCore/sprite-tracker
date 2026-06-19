@@ -13,6 +13,14 @@
  *   unreleased- true = not in game yet (hidden unless "show unreleased" is on)
  *
  * Sprite artwork © Epic Games — this is an unofficial fan-made collection tracker.
+ *
+ * Data verified against fortnite.gg/sprites (Chapter 7 Season 3 "Runners",
+ * 2026-06-19): 10 characters + Burnt Peanut, rarities as below, and the four
+ * live variant lines Normal/Gold/Gummy/Galaxy (Galaxy released 2026-06-18).
+ * NOTE: game data also defines Cube (Dream/Punk/Zero Point) and Quack (Zero
+ * Point) variant lines, but they have NO icons in-game yet, so they're omitted
+ * here until art exists. Gem/Holofoil/Rift below are the unreleased lines that
+ * already have art and show behind the "Show unreleased" toggle.
  */
 
 // Variant lines, in display order. label is what users see; "released" lines

@@ -13,10 +13,11 @@ collection is saved in your browser and encoded in the share link.
 ---
 
 ## ✨ Features
-- **All 41 released sprites** (10 characters × Normal/Gold/Gummy/Galaxy + Burnt Peanut), with a toggle for **unreleased** lines (Gem / Holofoil / Rift) as they leak.
-- **One-tap status:** Missing → Have → Mastered (👑). Hover a "Have" card for the crown to jump straight to Mastered.
-- **Filter by variant line** — see *all Gold*, *all Gummy*, *all Galaxy* at once (the headline ask), plus filter by status (Have / Missing / Mastered) and **group by character**.
-- **Live progress:** Collection x/41 and Mastery x/41 bars, and a have/total count on every line chip.
+- **All 41 released sprites** (10 characters × Normal/Gold/Gummy/Galaxy + Burnt Peanut), data verified against [fortnite.gg/sprites](https://fortnite.gg/sprites). Toggle **unreleased** lines (Gem / Holofoil / Rift) as they get art.
+- **Two views:** rich **Cards** or a dense **Checklist** (one tap = check it off) — the at-a-glance grid for "what do I still need."
+- **One-tap status:** Missing → Have → Mastered (👑). Hover a "Have" card for the crown to jump straight to Mastered. (In-game, *Mastery* = extracting a sprite at max level.)
+- **Filter by variant line** — see *all Gold*, *all Gummy*, *all Galaxy* at once (the headline ask), plus filter by status, **sort** by rarity/character/name, **hide mastered**, and **group by character**.
+- **Live progress:** Collection x/41 and Mastery x/41 bars, plus a have/total count on every line chip and a **Runners season countdown**.
 - **Bulk actions:** "Mark shown: Have / Missing" respect the current filter (e.g. filter Gold → mark all Gold have in one click).
 - **Export images** styled like the ones people post:
   - 🖼️ **My Collection** (green) — everything you have + mastered.

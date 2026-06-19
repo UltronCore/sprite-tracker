@@ -17,6 +17,7 @@
       <div>
         <h1>FORTNITE SPRITES TRACKER</h1>
         <p class="subtitle">Sprite Trade Stop — tap a sprite to mark it. Filter by line, export, and share.</p>
+        <p class="season"><span class="season-tag">RUNNERS</span> Chapter 7 Season 3 · <span id="seasonDays"></span></p>
       </div>
     </div>
 
@@ -45,7 +46,20 @@
       <button class="chip status-chip" data-status="mastered">👑 Mastered</button>
     </div>
     <div class="filter-group toggles">
+      <div class="view-toggle" id="viewToggle" aria-label="View mode">
+        <button class="vt-btn active" data-view="cards">▦ Cards</button>
+        <button class="vt-btn" data-view="checklist">☑ Checklist</button>
+      </div>
+      <label class="sort-label">Sort
+        <select id="sortSelect">
+          <option value="default">Default</option>
+          <option value="rarity">Rarity</option>
+          <option value="character">Character</option>
+          <option value="name">Name (A–Z)</option>
+        </select>
+      </label>
       <label class="toggle"><input type="checkbox" id="groupByCharacter" /> Group by character</label>
+      <label class="toggle"><input type="checkbox" id="hideMastered" /> Hide mastered</label>
       <label class="toggle"><input type="checkbox" id="showUnreleased" /> Show unreleased</label>
     </div>
   </section>

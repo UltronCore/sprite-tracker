@@ -10,7 +10,14 @@ const state = {
   statusFilter: "all",
   groupByCharacter: false,
   showUnreleased: false,
+  hideMastered: false,
+  view: "cards",              // cards | checklist
+  sort: "default",
 };
+
+// Season facts (Chapter 7 Season 3 "Runners"). Source: fortnite.gg / Epic.
+const SEASON = { name: "Runners", start: "2026-06-06", end: "2026-08-19" };
+const RARITY_ORDER = { mythic: 0, legendary: 1, epic: 2, rare: 3, special: 4 };
 
 // ---- persistence ---------------------------------------------------------
 function load() {
@@ -22,12 +29,15 @@ function load() {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     if (saved && typeof saved === "object") state.status = saved.status || {};
     if (saved.showUnreleased) state.showUnreleased = true;
+    if (saved.view) state.view = saved.view;
+    if (saved.sort) state.sort = saved.sort;
   } catch (_) { /* ignore */ }
 }
 
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
     status: state.status, showUnreleased: state.showUnreleased,
+    view: state.view, sort: state.sort,
   }));
 }
 
@@ -76,10 +86,25 @@ function matchesFilters(s) {
   if (!inScope(s)) return false;
   if (state.themeFilter !== "all" && s.theme !== state.themeFilter) return false;
   const v = st(s.id);
+  if (state.hideMastered && v === 2) return false;
   if (state.statusFilter === "have" && v < 1) return false;
   if (state.statusFilter === "missing" && v !== 0) return false;
   if (state.statusFilter === "mastered" && v !== 2) return false;
   return true;
+}
+
+// Apply the chosen sort to a list (keeps the data-file order for "default").
+function sortList(list) {
+  const arr = list.slice();
+  if (state.sort === "rarity") {
+    arr.sort((a, b) => (RARITY_ORDER[a.rarity.toLowerCase()] - RARITY_ORDER[b.rarity.toLowerCase()])
+      || a.name.localeCompare(b.name));
+  } else if (state.sort === "character") {
+    arr.sort((a, b) => a.character.localeCompare(b.character) || a.name.localeCompare(b.name));
+  } else if (state.sort === "name") {
+    arr.sort((a, b) => a.name.localeCompare(b.name));
+  }
+  return arr;
 }
 
 function statusLabel(v) { return v === 2 ? "MASTERED" : v === 1 ? "COLLECTED" : "MISSING"; }
@@ -114,7 +139,10 @@ function render() {
   document.getElementById("collectionBar").style.width = p.total ? (p.collected / p.total * 100) + "%" : "0";
   document.getElementById("masteryBar").style.width = p.total ? (p.mastered / p.total * 100) + "%" : "0";
 
-  const shown = SPRITES.filter(matchesFilters);
+  const renderer = state.view === "checklist" ? checkHTML : cardHTML;
+  grid.classList.toggle("checklist", state.view === "checklist");
+
+  const shown = sortList(SPRITES.filter(matchesFilters));
   let html = "";
   if (state.groupByCharacter) {
     const order = [...new Set(SPRITES.map((s) => s.character))];
@@ -122,13 +150,29 @@ function render() {
       const items = shown.filter((s) => s.character === char);
       if (!items.length) return;
       html += `<div class="group-head">${char}</div>`;
-      html += items.map(cardHTML).join("");
+      html += items.map(renderer).join("");
     });
   } else {
-    html = shown.map(cardHTML).join("");
+    html = shown.map(renderer).join("");
   }
   grid.innerHTML = html || `<div class="group-head">Nothing matches this filter.</div>`;
   updateThemeChipCounts();
+}
+
+const RARITY_HEX = {
+  rare: "#2ea4ff", epic: "#b15cff", legendary: "#ff8a2a", mythic: "#ffd23a", special: "#28e0c8",
+};
+
+// compact checklist tile
+function checkHTML(s) {
+  const v = st(s.id);
+  return `
+    <div class="check ${statusClass(v)}" data-id="${s.id}" title="${s.name} — ${s.rarity}">
+      <span class="rar-dot" style="background:${RARITY_HEX[s.rarity.toLowerCase()] || "#888"}"></span>
+      <img src="sprites/${s.id}.png" alt="${s.name}" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="box"></div>
+      <div class="cname">${s.name}</div>
+    </div>`;
 }
 
 // theme chips (built once)
@@ -168,7 +212,7 @@ grid.addEventListener("click", (e) => {
     save(); render();
     return;
   }
-  const card = e.target.closest(".card");
+  const card = e.target.closest(".card, .check");
   if (card) cycle(card.getAttribute("data-id"));
 });
 
@@ -192,6 +236,19 @@ document.getElementById("statusFilters").addEventListener("click", (e) => {
 
 document.getElementById("groupByCharacter").addEventListener("change", (e) => {
   state.groupByCharacter = e.target.checked; render();
+});
+document.getElementById("hideMastered").addEventListener("change", (e) => {
+  state.hideMastered = e.target.checked; render();
+});
+document.getElementById("sortSelect").addEventListener("change", (e) => {
+  state.sort = e.target.value; save(); render();
+});
+document.getElementById("viewToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest(".vt-btn");
+  if (!btn) return;
+  state.view = btn.getAttribute("data-view");
+  document.querySelectorAll(".vt-btn").forEach((b) => b.classList.toggle("active", b === btn));
+  save(); render();
 });
 document.getElementById("showUnreleased").addEventListener("change", (e) => {
   state.showUnreleased = e.target.checked; buildThemeChips(); save(); render();
@@ -232,8 +289,23 @@ function toast(msg) {
 }
 window.stsToast = toast;
 
+// season countdown line in the header
+function renderSeason() {
+  const el = document.getElementById("seasonDays");
+  if (!el) return;
+  const end = new Date(SEASON.end + "T00:00:00Z");
+  const days = Math.ceil((end - new Date()) / 86400000);
+  el.textContent = days > 0
+    ? `Sprites · ${days} days left (ends Aug 19)`
+    : "Sprites";
+}
+
 // ---- boot ----------------------------------------------------------------
 load();
 document.getElementById("showUnreleased").checked = state.showUnreleased;
+document.getElementById("sortSelect").value = state.sort;
+document.querySelectorAll(".vt-btn").forEach((b) =>
+  b.classList.toggle("active", b.getAttribute("data-view") === state.view));
 buildThemeChips();
+renderSeason();
 render();
