@@ -23,6 +23,7 @@ collection is saved in your browser and encoded in the share link.
   - 🖼️ **My Collection** (green) — everything you have + mastered.
   - 🔎 **Looking For** (red) — everything you still need.
 - **Share link:** `?c=…` encodes your whole collection in the URL — paste it anywhere, it loads instantly. Also saved to `localStorage`.
+- **Discord sync:** **Copy sync code** → paste into `/synccollection` in the Sprite Trade Stop bot. The bot then renders your collection/wishlist images natively and powers `/holders` and `/spritematch` trade-matching. (Same 2-bit code as the share link, decoded server-side from the shared sprite manifest so the two never drift.)
 
 ## 🕹️ How to use
 1. Open the site, tap sprites to set their status.

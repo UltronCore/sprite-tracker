@@ -276,6 +276,13 @@ document.getElementById("shareBtn").addEventListener("click", async () => {
   catch (_) { prompt("Copy your share link:", url); }
 });
 
+// copy just the sync code (for the Discord bot's /synccollection)
+document.getElementById("syncBtn").addEventListener("click", async () => {
+  const code = packCode();
+  try { await navigator.clipboard.writeText(code); toast("Sync code copied — paste it into /synccollection"); }
+  catch (_) { prompt("Copy your sync code, then run /synccollection in Discord:", code); }
+});
+
 // export (export.js)
 document.getElementById("exportCollectionBtn").addEventListener("click", () => exportImage("collection"));
 document.getElementById("exportMissingBtn").addEventListener("click", () => exportImage("missing"));
