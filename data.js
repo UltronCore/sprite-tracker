@@ -15,8 +15,11 @@
  * Sprite artwork © Epic Games — this is an unofficial fan-made collection tracker.
  *
  * Data verified against fortnite.gg/sprites (Chapter 7 Season 3 "Runners",
- * 2026-06-19): 10 characters + Burnt Peanut, rarities as below, and the four
- * live variant lines Normal/Gold/Gummy/Galaxy (Galaxy released 2026-06-18).
+ * re-checked 2026-06-24): still 41 RELEASED (10 characters + Burnt Peanut), the
+ * four live variant lines Normal/Gold/Gummy/Galaxy (Galaxy released 2026-06-18).
+ * Upcoming characters (Striker/Fishy/Aura/Boss/Grim Reaper drop 2026-06-25;
+ * John Wick TBD; Drifter/Ice/Seven datamine-only) are appended at the END as
+ * unreleased — flip to released on launch day.
  * NOTE: game data also defines Cube (Dream/Punk/Zero Point) and Quack (Zero
  * Point) variant lines, but they have NO icons in-game yet, so they're omitted
  * here until art exists. Gem/Holofoil/Rift below are the unreleased lines that
@@ -111,6 +114,21 @@ const SPRITES = [
 
   // Special mascot
   { id: "theburntpeanut_basic", name: "Burnt Peanut", character: "Burnt Peanut", theme: "basic", rarity: "Mythic", unreleased: false },
+
+  // --- Upcoming characters (appended at the END so existing share codes stay
+  // valid). The "Gone Wild" drop lands 2026-06-25; John Wick date TBD;
+  // Drifter/Ice/Seven are datamine-only. All kept unreleased until live —
+  // flip unreleased:false on release day and the bot auto-announces them.
+  { id: "striker_basic", name: "Striker",     character: "Striker",     theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "fishy_basic",   name: "Fishy",       character: "Fishy",       theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "aura_basic",    name: "Aura",        character: "Aura",        theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "boss_basic",    name: "Boss",        character: "Boss",        theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "reaper_basic",  name: "Grim Reaper", character: "Grim Reaper", theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "reaper_galaxy", name: "Galaxy Grim Reaper", character: "Grim Reaper", theme: "galaxy", rarity: "Special", unreleased: true },
+  { id: "wick_basic",    name: "John Wick",   character: "John Wick",   theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "drifter_basic", name: "Drifter",     character: "Drifter",     theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "ice_basic",     name: "Ice",         character: "Ice",         theme: "basic",  rarity: "Rare",    unreleased: true },
+  { id: "seven_basic",   name: "Seven",       character: "Seven",       theme: "basic",  rarity: "Rare",    unreleased: true },
 ];
 
 // Stable id order used to pack/unpack the share code (so URLs stay valid as long
